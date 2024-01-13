@@ -1,14 +1,14 @@
-import 'package:cipherschool_assignment_siddhesh/utilities/my_clickable_text.dart';
+import 'package:cipherschool_assignment_siddhesh/utilities/clickable_text.dart';
 import 'package:flutter/material.dart';
 
 import '../service/auth/auth_service.dart';
-import '../utilities/my_button.dart';
-import '../utilities/my_dialog.dart';
-import '../utilities/my_textfield.dart';
+import '../utilities/button.dart';
+import '../utilities/dialog.dart';
+import '../utilities/textfield.dart';
 
 class RegisterPage extends StatefulWidget {
   final void Function()? onTap;
-  RegisterPage({super.key, required this.onTap});
+  const RegisterPage({super.key, required this.onTap});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -17,17 +17,15 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   // email and password controllers
   final TextEditingController _emailController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
-
   final TextEditingController _confirmpasswordController =
       TextEditingController();
-
   final TextEditingController _nameController = TextEditingController();
 
   // signup function
   void signup(BuildContext context) async {
     // auth service
+    // ignore: no_leading_underscores_for_local_identifiers
     AuthService _auth = AuthService();
 
     // signup with email and password
@@ -54,6 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+  // checkbox value
   bool _isChecked = false;
 
   @override
@@ -121,6 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
             MyButton(
               text: "Sign Up",
               onTap: () {
+                // check if user has agreed to terms and conditions
                 if (!_isChecked) {
                   showDialog(
                       context: context,
@@ -138,7 +138,7 @@ class _RegisterPageState extends State<RegisterPage> {
             const SizedBox(height: 10),
             const Text("Or with", style: TextStyle(color: Colors.grey)),
             const SizedBox(height: 10),
-            // google button
+            // google sign up button
             GestureDetector(
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 25),
@@ -176,13 +176,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       });
                   return;
                 }
+                // auth service
                 AuthService auth = AuthService();
                 // sign in with google
                 auth.signInWithGoogle();
               },
             ),
             const SizedBox(height: 20),
-            // register button
+            // already have an account text
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

@@ -1,9 +1,9 @@
-import 'package:cipherschool_assignment_siddhesh/utilities/my_clickable_text.dart';
+import 'package:cipherschool_assignment_siddhesh/utilities/clickable_text.dart';
 import 'package:flutter/material.dart';
 import '../service/auth/auth_service.dart';
-import '../utilities/my_button.dart';
-import '../utilities/my_dialog.dart';
-import '../utilities/my_textfield.dart';
+import '../utilities/button.dart';
+import '../utilities/dialog.dart';
+import '../utilities/textfield.dart';
 
 class LoginPage extends StatelessWidget {
   final void Function()? onTap;

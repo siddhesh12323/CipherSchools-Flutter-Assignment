@@ -3,7 +3,7 @@ import 'package:cipherschool_assignment_siddhesh/service/auth/auth_gate.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import 'screens/home_page.dart';
+import 'screens/navigation_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +21,7 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         '/': (context) => AuthGate(),
-        '/home': (context) => HomePage(),
+        '/home': (context) => NavigationPage(),
       },
     );
   }
