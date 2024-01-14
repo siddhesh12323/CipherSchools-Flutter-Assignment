@@ -35,13 +35,10 @@ class TransactionService {
       'isExpense': isExpense
     };
 
-    // transaction timestamp is used as document id
-    final transactionID = timestamp.toString();
-
     // add transaction to firestore
     await _firestore
         .collection('Transactions')
-        .doc(transactionID)
+        .doc(currentUserID)
         .collection('UserTransactions')
         .add(newTransaction);
   }
@@ -61,22 +58,16 @@ class TransactionService {
   }
 
   // get transaction stream
-  Stream<List<Map<String, dynamic>>> getTransactionsStream() {
-    // get current user id
-    final currentUserID = _auth.currentUser!.uid;
-
+  Stream<QuerySnapshot> getTransactionsStream() {
     // return _firestore.collection('Users').snapshots().map((snapshot) {
     //     return snapshot.docs.map((doc) => doc.data()).toList();
     //   });
-
+    final currentUserID = _auth.currentUser!.uid;
     // get transactions stream from firestore for current user
     return _firestore
         .collection('Transactions')
         .doc(currentUserID)
         .collection('UserTransactions')
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((doc) => doc.data()).toList();
-    });
+        .snapshots();
   }
 }

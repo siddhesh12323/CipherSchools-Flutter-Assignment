@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 
-class TabPage extends StatelessWidget {
-  final String pageName;
-  const TabPage({super.key, required this.pageName});
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Page"),
+        title: const Text("Profile"),
         centerTitle: true,
       ),
       body: Center(
-        child: Text("This is $pageName page"),
+        child: Text("Profile Page"),
       ),
     );
   }

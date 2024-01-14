@@ -1,11 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 
 import '../service/firestore/transaction_service.dart';
 
 class TransactionTile extends StatelessWidget {
   final String transactionCategory;
-  final String transactionTimestamp;
+  final Timestamp transactionTimestamp;
   final double transactionAmount;
   final String transactionDescription;
   final bool isExpense;
@@ -99,10 +101,7 @@ class TransactionTile extends StatelessWidget {
         const SizedBox(height: 5),
         // show the transactionTimestamp in am pm format
         Text(
-          DateTime.parse(transactionTimestamp)
-              .toLocal()
-              .toString()
-              .substring(0, 16),
+          DateFormat.jm().format(transactionTimestamp.toDate()),
           style: const TextStyle(
             fontSize: 14,
             color: Colors.grey,
@@ -133,7 +132,8 @@ class TransactionTile extends StatelessWidget {
                       TextButton(
                         onPressed: () {
                           // delete transaction
-                          deleteTransaction(transactionTimestamp);
+                          //! CHECK THIS!
+                          deleteTransaction(transactionTimestamp.toString());
                           Navigator.pop(context);
                         },
                         child: const Text("OK"),
@@ -155,7 +155,7 @@ class TransactionTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _getImage(),
-            const SizedBox(width: 5),
+            const SizedBox(width: 10),
             _getTransactionCategoryAndDescription(),
             const Spacer(),
             _getTransactionAmountAndTimestamp(),

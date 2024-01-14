@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/navigation_page.dart';
+import 'screens/profile_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +27,7 @@ class MainApp extends StatelessWidget {
         '/home': (context) => NavigationPage(),
         '/add_expense': (context) => AddExpense(),
         '/add_income': (context) => AddIncome(),
+        '/profile': (context) => ProfilePage(),
       },
     );
   }

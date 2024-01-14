@@ -1,6 +1,7 @@
 import 'package:cipherschool_assignment_siddhesh/navbar/nav_bar.dart';
 import 'package:cipherschool_assignment_siddhesh/navbar/nav_model.dart';
 import 'package:cipherschool_assignment_siddhesh/screens/home_page.dart';
+import 'package:cipherschool_assignment_siddhesh/screens/profile_page.dart';
 import 'package:flutter/material.dart';
 
 import '../utilities/tab_page.dart';
@@ -26,9 +27,17 @@ class _NavigationPageState extends State<NavigationPage> {
     super.initState();
     items = [
       NavModel(page: HomePage(), navKey: homeNavKey),
-      NavModel(page: TabPage(tab: 2), navKey: transactionNavKey),
-      NavModel(page: TabPage(tab: 3), navKey: budgetNavKey),
-      NavModel(page: TabPage(tab: 4), navKey: profileNavKey),
+      NavModel(
+          page: TabPage(
+            pageName: "Transactions",
+          ),
+          navKey: transactionNavKey),
+      NavModel(
+          page: TabPage(
+            pageName: "Budget",
+          ),
+          navKey: budgetNavKey),
+      NavModel(page: ProfilePage(), navKey: profileNavKey),
     ];
   }
 

@@ -15,16 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // auth and expense service
   final AuthService _auth = AuthService();
-
   final TransactionService _transactionService = TransactionService();
-
-  // add transaction function
-  void addTransaction(double transactionAmount, String transactionCategory,
-      String transactionDescription, bool isExpense) async {
-    // add transaction
-    await _transactionService.addTransaction(transactionAmount,
-        transactionCategory, transactionDescription, isExpense);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,40 +23,40 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           _topInfoBar(context),
-          const SizedBox(height: 20),
+          // const SizedBox(height: 20),
           //_filtersChipBar(),
-          const SizedBox(height: 20),
+          // const SizedBox(height: 20),
           //_seeAllTransactionsButton(),
           const SizedBox(height: 20),
-          _buildTransactionsList(),
+          _buildTransactionsList(context),
         ],
       ),
     );
   }
 
   // build transactions list
-  Widget _buildTransactionsList() {
+  Widget _buildTransactionsList(BuildContext context) {
     return Expanded(
-      child: StreamBuilder<List<Map<String, dynamic>>>(
+      child: StreamBuilder(
         stream: _transactionService.getTransactionsStream(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final transactions = snapshot.data!;
-            return ListView.builder(
-              itemCount: transactions.length,
-              itemBuilder: (context, index) {
-                return TransactionTile(
-                  transactionAmount: transactions[index]['transactionAmount'],
-                  transactionCategory: transactions[index]
-                      ['transactionCategory'],
-                  transactionDescription: transactions[index]
-                      ['transactionDescription'],
-                  transactionTimestamp: transactions[index]
-                      ['transactionTimestamp'],
-                  isExpense: transactions[index]['isExpense'],
-                );
-              },
-            );
+            return ListView(
+                children: transactions.docs
+                    .map<Widget>((transaction) => TransactionTile(
+                          transactionCategory:
+                              transaction["transactionCategory"],
+                          transactionAmount: transaction["transactionAmount"],
+                          transactionDescription:
+                              transaction["transactionDescription"],
+                          transactionTimestamp:
+                              transaction["transactionTimestamp"],
+                          isExpense: transaction["isExpense"],
+                        ))
+                    .toList());
+          } else if (snapshot.hasError) {
+            return Text("Error: ${snapshot.error}");
           } else {
             return const Center(child: CircularProgressIndicator());
           }
@@ -78,7 +69,7 @@ class _HomePageState extends State<HomePage> {
   Widget _topInfoBar(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      height: 300,
+      height: 350,
       // make the bottom right and left corners of the container rounded
       decoration: const BoxDecoration(
         color: Color.fromARGB(255, 253, 247, 235),
@@ -93,6 +84,24 @@ class _HomePageState extends State<HomePage> {
         children: [
           const SizedBox(height: 40),
           _topnavbar(context),
+          const SizedBox(height: 20),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text("Account Balance",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey.withOpacity(0.5))),
+              const SizedBox(height: 10),
+              Text("₹ ${0.0}",
+                  style: const TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black)),
+            ],
+          ),
         ],
       ),
     );
@@ -108,7 +117,7 @@ class _HomePageState extends State<HomePage> {
           height: 40,
           width: 40,
           decoration: BoxDecoration(
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.primary,
             borderRadius: BorderRadius.circular(20),
           ),
           child: const Icon(Icons.person, color: Colors.white),
@@ -145,7 +154,7 @@ class _HomePageState extends State<HomePage> {
           height: 40,
           width: 40,
           decoration: BoxDecoration(
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.primary,
             borderRadius: BorderRadius.circular(20),
           ),
           child: const Icon(Icons.notifications, color: Colors.white),
