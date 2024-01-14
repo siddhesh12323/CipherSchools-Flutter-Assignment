@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -50,7 +49,7 @@ class AuthService {
 
   // register with email and password
   Future<UserCredential> registerWithEmailAndPassword(
-      String email, String password) async {
+      String email, String password, String name) async {
     try {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
@@ -61,6 +60,7 @@ class AuthService {
         "email": email,
         "password": password,
         "uid": userCredential.user!.uid,
+        "name": name
       });
 
       // return user object

@@ -64,7 +64,41 @@ class _NavigationPageState extends State<NavigationPage> {
             width: 64.0,
             child: FloatingActionButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/home');
+                // show a dialog to choose between expense and income
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Center(
+                      child: AlertDialog(
+                        title: const Text("Add transaction"),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // add expense button
+                            ElevatedButton(
+                              onPressed: () {
+                                // navigate to add expense page and pop the dialog
+                                Navigator.pop(context);
+                                Navigator.pushNamed(context, '/add_expense');
+                              },
+                              child: const Text("Add expense"),
+                            ),
+                            const SizedBox(height: 10),
+                            // add income button
+                            ElevatedButton(
+                              onPressed: () {
+                                // navigate to add income page and pop the dialog
+                                Navigator.pop(context);
+                                Navigator.pushNamed(context, '/add_income');
+                              },
+                              child: const Text("Add income"),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
               },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(32.0),
