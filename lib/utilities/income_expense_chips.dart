@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class IncomeExpenseChip extends StatelessWidget {
   final String icon;
   final String label;
-  final double amount;
   final Color color;
+  final double amount;
   const IncomeExpenseChip(
       {super.key,
       required this.icon,
       required this.label,
-      required this.amount,
-      required this.color});
+      required this.color,
+      required this.amount});
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +35,14 @@ class IncomeExpenseChip extends StatelessWidget {
                 const SizedBox(height: 5),
                 Text(
                   label,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
-                Text("₹ $amount",
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white)),
+                Center(
+                    child: Text("₹ $amount",
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold))),
               ],
             )
           ],

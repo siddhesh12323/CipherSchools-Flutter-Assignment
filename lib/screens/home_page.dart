@@ -25,12 +25,44 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           _topInfoBar(context),
-          // const SizedBox(height: 20),
-          //_filtersChipBar(),
-          // const SizedBox(height: 20),
-          //_seeAllTransactionsButton(),
           const SizedBox(height: 20),
+          _filtersChipBar(),
+          const SizedBox(height: 10),
+          _seeAllTransactionsButton(),
+          // const SizedBox(height: 20),
           _buildTransactionsList(context),
+        ],
+      ),
+    );
+  }
+
+  // filters chip bar
+  Widget _filtersChipBar() {
+    return SegmentedButton(
+      segments: const [
+        ButtonSegment(value: "Today", label: Text("Today")),
+        ButtonSegment(value: "Week", label: Text("Week")),
+        ButtonSegment(value: "Month", label: Text("Month")),
+        ButtonSegment(value: "Year", label: Text("Year"))
+      ],
+      selected: const {"Today"},
+    );
+  }
+
+  // see all transactions button
+  Widget _seeAllTransactionsButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        children: [
+          const SizedBox(
+            width: 20,
+            height: 0,
+          ),
+          Text("Recent Transaction",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const Spacer(),
+          FilledButton.tonal(onPressed: () {}, child: Text("See All")),
         ],
       ),
     );
@@ -82,30 +114,53 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 20),
           _accountBalance(),
           const SizedBox(height: 20),
-          _expenseAndIncome(),
+          _getIncomeExpenseStream(context),
         ],
       ),
     );
   }
 
   // expense and income
-  Widget _expenseAndIncome() {
-    return const Row(
+  Widget _getIncomeExpenseStream(BuildContext context) {
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Expanded(
-            child: IncomeExpenseChip(
-                icon: "income",
-                label: "Income",
-                amount: 0,
-                color: Colors.green)),
-        SizedBox(width: 10),
-        Expanded(
-            child: IncomeExpenseChip(
-                icon: "expense",
-                label: "Expenses",
-                amount: 0,
-                color: Colors.red)),
+        StreamBuilder(
+            stream: _transactionService.getIncomeSumStream(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var income = snapshot.data!;
+                return Expanded(
+                    child: IncomeExpenseChip(
+                        icon: "income",
+                        label: "Income",
+                        color: Colors.green,
+                        amount: income));
+              } else if (snapshot.hasError) {
+                return Text("Error: ${snapshot.error}");
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            }),
+        const SizedBox(width: 10),
+        StreamBuilder(
+            stream: _transactionService.getExpenseSumStream(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var expense = snapshot.data!;
+                return Expanded(
+                  child: IncomeExpenseChip(
+                      icon: "expense",
+                      label: "Expenses",
+                      color: Colors.red,
+                      amount: expense),
+                );
+              } else if (snapshot.hasError) {
+                return Text("Error: ${snapshot.error}");
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            }),
       ],
     );
   }

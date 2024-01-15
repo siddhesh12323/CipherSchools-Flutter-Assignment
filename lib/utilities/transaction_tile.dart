@@ -32,6 +32,8 @@ class TransactionTile extends StatelessWidget {
       transactionImage = "assets/images/car.png";
     } else if (transaction["transactionCategory"] == "Other") {
       transactionImage = "assets/images/other.jpg";
+    } else {
+      transactionImage = "assets/images/other.jpg";
     }
     return Container(
       height: 50,

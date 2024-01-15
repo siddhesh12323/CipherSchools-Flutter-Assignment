@@ -70,4 +70,55 @@ class TransactionService {
         .collection('UserTransactions')
         .snapshots();
   }
+
+  Stream<double> getIncomeSumStream() {
+    final DateTime now = DateTime.now();
+    return FirebaseFirestore.instance
+        .collection('Transactions')
+        .doc(_auth.currentUser!.uid)
+        .collection('UserTransactions')
+        .where('isExpense', isEqualTo: false)
+        .where('transactionTimestamp',
+            isGreaterThanOrEqualTo:
+                Timestamp.fromDate(DateTime(now.year, now.month, 1)))
+        .where('transactionTimestamp',
+            isLessThan:
+                Timestamp.fromDate(DateTime(now.year, now.month + 1, 1)))
+        .snapshots()
+        .map((querySnapshot) {
+      double incomeSum = 0;
+      print('QuerySnap: ${querySnapshot.docs}');
+      for (QueryDocumentSnapshot<Map<String, dynamic>> document
+          in querySnapshot.docs) {
+        print('Document: ${document.data()}');
+        incomeSum += (document['transactionAmount'] ?? 0);
+        print(incomeSum);
+      }
+      return incomeSum;
+    });
+  }
+
+  Stream<double> getExpenseSumStream() {
+    final DateTime now = DateTime.now();
+    return FirebaseFirestore.instance
+        .collection('Transactions')
+        .doc(_auth.currentUser!.uid)
+        .collection('UserTransactions')
+        .where('isExpense', isEqualTo: true)
+        .where('transactionTimestamp',
+            isGreaterThanOrEqualTo:
+                Timestamp.fromDate(DateTime(now.year, now.month, 1)))
+        .where('transactionTimestamp',
+            isLessThan:
+                Timestamp.fromDate(DateTime(now.year, now.month + 1, 1)))
+        .snapshots()
+        .map((querySnapshot) {
+      double expenseSum = 0;
+      for (QueryDocumentSnapshot<Map<String, dynamic>> document
+          in querySnapshot.docs) {
+        expenseSum += (document['transactionAmount'] ?? 0).toDouble();
+      }
+      return expenseSum;
+    });
+  }
 }
