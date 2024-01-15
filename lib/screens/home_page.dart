@@ -3,12 +3,10 @@ import 'package:cipherschool_assignment_siddhesh/utilities/income_expense_chips.
 import 'package:cipherschool_assignment_siddhesh/utilities/transaction_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-import '../service/auth/auth_service.dart';
 import '../utilities/dialog.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -16,7 +14,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // auth and expense service
-  final AuthService _auth = AuthService();
   final TransactionService _transactionService = TransactionService();
 
   @override
@@ -59,10 +56,10 @@ class _HomePageState extends State<HomePage> {
             width: 20,
             height: 0,
           ),
-          Text("Recent Transaction",
+          const Text("Recent Transaction",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const Spacer(),
-          FilledButton.tonal(onPressed: () {}, child: Text("See All")),
+          FilledButton.tonal(onPressed: () {}, child: const Text("See All")),
         ],
       ),
     );
@@ -177,11 +174,23 @@ class _HomePageState extends State<HomePage> {
                 fontWeight: FontWeight.bold,
                 color: Colors.grey.withOpacity(0.5))),
         const SizedBox(height: 10),
-        const Text("₹ ${0.0}",
-            style: TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
-                color: Colors.black)),
+        StreamBuilder(
+          stream: _transactionService.getNetWorthStream(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              var netWorth = snapshot.data!;
+              return Text(netWorth < 0 ? "₹ 0" : "₹ $netWorth",
+                  style: const TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black));
+            } else if (snapshot.hasError) {
+              return Text("Error: ${snapshot.error}");
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
       ],
     );
   }

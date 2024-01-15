@@ -26,14 +26,14 @@ class _NavigationPageState extends State<NavigationPage> {
   void initState() {
     super.initState();
     items = [
-      NavModel(page: HomePage(), navKey: homeNavKey),
+      NavModel(page: const HomePage(), navKey: homeNavKey),
       NavModel(
-          page: TabPage(
+          page: const TabPage(
             pageName: "Transactions",
           ),
           navKey: transactionNavKey),
       NavModel(
-          page: TabPage(
+          page: const TabPage(
             pageName: "Budget",
           ),
           navKey: budgetNavKey),
@@ -68,7 +68,7 @@ class _NavigationPageState extends State<NavigationPage> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: Container(
-            margin: EdgeInsets.only(top: 25.0),
+            margin: const EdgeInsets.only(top: 25.0),
             height: 64.0,
             width: 64.0,
             child: FloatingActionButton(

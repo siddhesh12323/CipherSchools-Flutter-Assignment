@@ -1,4 +1,5 @@
-import 'package:cipherschool_assignment_siddhesh/service/auth/auth_service.dart';
+// ignore_for_file: prefer_final_fields
+
 import 'package:cipherschool_assignment_siddhesh/utilities/button.dart';
 import 'package:cipherschool_assignment_siddhesh/utilities/textfield.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,6 @@ class AddIncome extends StatefulWidget {
 class _AddIncomeState extends State<AddIncome> {
   // cloud firestore service
   final TransactionService _transactionService = TransactionService();
-  final AuthService _auth = AuthService();
 
   String incomeCategoriesDropdownValue = 'Benefits';
   String walletCategoriesDropdownValue = 'Wallet 1';
@@ -131,10 +131,11 @@ class _AddIncomeState extends State<AddIncome> {
             }).toList(),
             onChanged: (newValue) {
               setState(() {
-                if (dropdownContext == "income")
+                if (dropdownContext == "income") {
                   incomeCategoriesDropdownValue = newValue!;
-                else
+                } else {
                   walletCategoriesDropdownValue = newValue!;
+                }
               });
             },
           )),

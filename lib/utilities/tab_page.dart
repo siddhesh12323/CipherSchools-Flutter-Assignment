@@ -8,7 +8,7 @@ class TabPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Page"),
+        title: const Text("Page"),
         centerTitle: true,
       ),
       body: Center(

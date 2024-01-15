@@ -16,7 +16,6 @@ class AuthService {
       // return user object
       return result;
     } catch (e) {
-      print(e.toString());
       return null;
     }
   }

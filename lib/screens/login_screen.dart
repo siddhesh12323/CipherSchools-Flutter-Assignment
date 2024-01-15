@@ -16,6 +16,7 @@ class LoginPage extends StatelessWidget {
   // login function
   void login(BuildContext context) async {
     // auth service
+    // ignore: no_leading_underscores_for_local_identifiers
     AuthService _auth = AuthService();
 
     // login with email and password

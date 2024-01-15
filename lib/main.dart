@@ -23,10 +23,10 @@ class MainApp extends StatelessWidget {
       title: 'CipherSchools Assignment',
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (context) => AuthGate(),
-        '/home': (context) => NavigationPage(),
-        '/add_expense': (context) => AddExpense(),
-        '/add_income': (context) => AddIncome(),
+        '/': (context) => const AuthGate(),
+        '/home': (context) => const NavigationPage(),
+        '/add_expense': (context) => const AddExpense(),
+        '/add_income': (context) => const AddIncome(),
         '/profile': (context) => ProfilePage(),
       },
     );

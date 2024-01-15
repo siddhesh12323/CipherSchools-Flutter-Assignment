@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rxdart/rxdart.dart';
 
 class TransactionService {
   // get instance of cloud firestore and auth
@@ -11,6 +12,22 @@ class TransactionService {
     return _firestore.collection('Users').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) => doc.data()).toList();
     });
+  }
+
+  // get the name of the current user
+  Future<String> getCurrentUserName() async {
+    // get current user id
+    final currentUserID = _auth.currentUser!.uid;
+
+    // get current user name from firestore
+    final currentUser = await _firestore
+        .collection('Users')
+        .doc(currentUserID)
+        .get()
+        .then((value) => value.data());
+
+    // return current user name
+    return currentUser!['name'];
   }
 
   // add transaction
@@ -87,12 +104,9 @@ class TransactionService {
         .snapshots()
         .map((querySnapshot) {
       double incomeSum = 0;
-      print('QuerySnap: ${querySnapshot.docs}');
       for (QueryDocumentSnapshot<Map<String, dynamic>> document
           in querySnapshot.docs) {
-        print('Document: ${document.data()}');
         incomeSum += (document['transactionAmount'] ?? 0);
-        print(incomeSum);
       }
       return incomeSum;
     });
@@ -120,5 +134,16 @@ class TransactionService {
       }
       return expenseSum;
     });
+  }
+
+  Stream<double> getNetWorthStream() {
+    Stream<double> incomeStream = getIncomeSumStream();
+    Stream<double> expenseStream = getExpenseSumStream();
+
+    return Rx.combineLatest2(
+      incomeStream,
+      expenseStream,
+      (double income, double expense) => income - expense,
+    );
   }
 }
