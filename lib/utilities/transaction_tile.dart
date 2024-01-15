@@ -6,20 +6,9 @@ import 'package:intl/intl.dart';
 import '../service/firestore/transaction_service.dart';
 
 class TransactionTile extends StatelessWidget {
-  final String transactionCategory;
-  final Timestamp transactionTimestamp;
-  final double transactionAmount;
-  final String transactionDescription;
-  final bool isExpense;
+  final QueryDocumentSnapshot<Object?> transaction;
 
-  TransactionTile({
-    super.key,
-    required this.transactionCategory,
-    required this.transactionTimestamp,
-    required this.transactionAmount,
-    required this.transactionDescription,
-    required this.isExpense,
-  });
+  TransactionTile({super.key, required this.transaction});
 
   // get instance of expense service
   final TransactionService _expenseService = TransactionService();
@@ -33,15 +22,15 @@ class TransactionTile extends StatelessWidget {
   // get image based on transaction category
   Container _getImage() {
     String transactionImage = '';
-    if (transactionCategory == "Shopping") {
+    if (transaction["transactionCategory"] == "Shopping") {
       transactionImage = "assets/images/shopping-bag.png";
-    } else if (transactionCategory == "Subscription") {
+    } else if (transaction["transactionCategory"] == "Subscription") {
       transactionImage = "assets/images/recurring-bill.png";
-    } else if (transactionCategory == "Food") {
+    } else if (transaction["transactionCategory"] == "Food") {
       transactionImage = "assets/images/restaurant.png";
-    } else if (transactionCategory == "Travel") {
+    } else if (transaction["transactionCategory"] == "Travel") {
       transactionImage = "assets/images/car.png";
-    } else if (transactionCategory == "Other") {
+    } else if (transaction["transactionCategory"] == "Other") {
       transactionImage = "assets/images/other.jpg";
     }
     return Container(
@@ -67,7 +56,7 @@ class TransactionTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          transactionCategory,
+          transaction["transactionCategory"],
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -75,7 +64,11 @@ class TransactionTile extends StatelessWidget {
         ),
         const SizedBox(height: 5),
         Text(
-          transactionDescription,
+          transaction["transactionDescription"].length > 30
+              ? transaction["transactionDescription"].substring(0, 30) + "..."
+              : transaction["transactionDescription"],
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
           style: const TextStyle(
             fontSize: 14,
             color: Colors.grey,
@@ -91,17 +84,19 @@ class TransactionTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
-          isExpense ? "- ₹$transactionAmount" : "+ ₹$transactionAmount",
+          transaction["isExpense"]
+              ? "- ₹${transaction["transactionAmount"]}"
+              : "+ ₹${transaction["transactionAmount"]}",
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: isExpense ? Colors.red : Colors.green,
+            color: transaction["isExpense"] ? Colors.red : Colors.green,
           ),
         ),
         const SizedBox(height: 5),
         // show the transactionTimestamp in am pm format
         Text(
-          DateFormat.jm().format(transactionTimestamp.toDate()),
+          DateFormat.jm().format(transaction["transactionTimestamp"].toDate()),
           style: const TextStyle(
             fontSize: 14,
             color: Colors.grey,
@@ -133,7 +128,7 @@ class TransactionTile extends StatelessWidget {
                         onPressed: () {
                           // delete transaction
                           //! CHECK THIS!
-                          deleteTransaction(transactionTimestamp.toString());
+                          deleteTransaction(transaction.id);
                           Navigator.pop(context);
                         },
                         child: const Text("OK"),
