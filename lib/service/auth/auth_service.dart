@@ -77,7 +77,7 @@ class AuthService {
   }
 
   // sign up with google
-  Future<UserCredential> signInWithGoogle() async {
+  Future<UserCredential?> signInWithGoogle() async {
     try {
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -97,7 +97,7 @@ class AuthService {
           await FirebaseAuth.instance.signInWithCredential(credential);
       return userCredential;
     } catch (e) {
-      throw Exception(e.toString());
+      return null;
     }
   }
 
