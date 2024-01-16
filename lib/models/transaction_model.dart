@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// Transaction model
 class Transaction {
   final String userID;
   final String userEmail;

@@ -4,9 +4,14 @@ import 'package:cipherschool_assignment_siddhesh/screens/add_income.dart';
 import 'package:cipherschool_assignment_siddhesh/service/auth/auth_gate.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
 import 'screens/navigation_page.dart';
 import 'screens/profile_page.dart';
+
+/*
+  Test Credentials:
+  Email: testuser1@gmail.com
+  Password: 12345678
+*/
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -14,13 +14,16 @@ class AddIncome extends StatefulWidget {
 }
 
 class _AddIncomeState extends State<AddIncome> {
-  // cloud firestore service
+  // get transaction service
   final TransactionService _transactionService = TransactionService();
 
+  // dropdown values
   String incomeCategoriesDropdownValue = 'Benefits';
   String walletCategoriesDropdownValue = 'Wallet 1';
   TextEditingController _amountController = TextEditingController();
   TextEditingController _incomeDescriptionController = TextEditingController();
+
+  // income categories
   List<String> _incomeCategories = [
     "Benefits",
     "Salary",
@@ -28,6 +31,7 @@ class _AddIncomeState extends State<AddIncome> {
     "Gifts",
   ];
 
+  // wallet categories
   List<String> _walletCategories = [
     "Wallet 1",
     "Wallet 2",
@@ -35,8 +39,8 @@ class _AddIncomeState extends State<AddIncome> {
     "Wallet 4",
   ];
 
+  // add income to firestore
   void _addIncome() async {
-    // add income to the database
     await _transactionService.addTransaction(
         double.parse(_amountController.text),
         incomeCategoriesDropdownValue,
@@ -44,6 +48,7 @@ class _AddIncomeState extends State<AddIncome> {
         false);
   }
 
+  // get income amount
   Container _incomeAmount() {
     // ignore: sized_box_for_whitespace
     return Container(
@@ -101,6 +106,7 @@ class _AddIncomeState extends State<AddIncome> {
     );
   }
 
+  // dropdown
   Container _dropdown(List<String> categories, String dropdownContext) {
     return Container(
       height: 60,
@@ -142,6 +148,7 @@ class _AddIncomeState extends State<AddIncome> {
     );
   }
 
+  // income info
   Container _incomeInfo() {
     return Container(
       // make the top right and left corners of the container rounded
@@ -191,7 +198,7 @@ class _AddIncomeState extends State<AddIncome> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text(
-          "Expense",
+          "Income",
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),

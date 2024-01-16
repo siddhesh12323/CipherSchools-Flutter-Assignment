@@ -26,7 +26,6 @@ class _HomePageState extends State<HomePage> {
           _filtersChipBar(),
           const SizedBox(height: 10),
           _seeAllTransactionsButton(),
-          // const SizedBox(height: 20),
           _buildTransactionsList(context),
         ],
       ),

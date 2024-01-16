@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Navigation bar
 class NavBar extends StatelessWidget {
   final int pageIndex;
   final Function(int) onTap;
@@ -34,6 +35,7 @@ class NavBar extends StatelessWidget {
     );
   }
 
+  // navigation item
   Widget navItem(
       IconData icon, String text, bool selected, BuildContext context,
       {Function()? onTap}) {

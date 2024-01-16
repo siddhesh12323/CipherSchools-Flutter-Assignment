@@ -1,9 +1,7 @@
 // ignore_for_file: prefer_final_fields
-
 import 'package:cipherschool_assignment_siddhesh/utilities/button.dart';
 import 'package:cipherschool_assignment_siddhesh/utilities/textfield.dart';
 import 'package:flutter/material.dart';
-
 import '../service/firestore/transaction_service.dart';
 
 class AddExpense extends StatefulWidget {
@@ -14,13 +12,16 @@ class AddExpense extends StatefulWidget {
 }
 
 class _AddExpenseState extends State<AddExpense> {
-  // cloud firestore service
+  // get transaction service
   final TransactionService _transactionService = TransactionService();
 
+  // dropdown values
   String expenseCategoriesDropdownValue = 'Subscription';
   String walletCategoriesDropdownValue = 'Wallet 1';
   TextEditingController _amountController = TextEditingController();
   TextEditingController _expenseDescriptionController = TextEditingController();
+
+  // expense categories
   List<String> _expenseCategories = [
     "Subscription",
     "Food",
@@ -28,6 +29,7 @@ class _AddExpenseState extends State<AddExpense> {
     "Shopping",
   ];
 
+  // wallet categories
   List<String> _walletCategories = [
     "Wallet 1",
     "Wallet 2",
@@ -35,8 +37,8 @@ class _AddExpenseState extends State<AddExpense> {
     "Wallet 4",
   ];
 
+  // add expense to firestore
   void _addExpense() {
-    // add expense to the database
     _transactionService.addTransaction(
         double.parse(_amountController.text),
         expenseCategoriesDropdownValue,
@@ -44,6 +46,7 @@ class _AddExpenseState extends State<AddExpense> {
         true);
   }
 
+  // expense amount
   Container _expenseAmount() {
     // ignore: sized_box_for_whitespace
     return Container(
@@ -101,6 +104,7 @@ class _AddExpenseState extends State<AddExpense> {
     );
   }
 
+  // dropdown model
   Container _dropdown(List<String> categories, String dropdownContext) {
     return Container(
       height: 60,
@@ -142,6 +146,7 @@ class _AddExpenseState extends State<AddExpense> {
     );
   }
 
+  // get expense info from user
   Container _expenseInfo() {
     return Container(
       // make the top right and left corners of the container rounded
@@ -173,6 +178,7 @@ class _AddExpenseState extends State<AddExpense> {
               text: "Continue",
               onTap: () {
                 _addExpense();
+                // show snackbar
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text("Expense added successfully!"),

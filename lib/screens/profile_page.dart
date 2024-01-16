@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
 
+  // transaction service and auth service
   final TransactionService transactionService = TransactionService();
   final AuthService authService = AuthService();
 
@@ -24,11 +25,12 @@ class ProfilePage extends StatelessWidget {
             const SizedBox(height: 50),
             _topNavBar(context),
             const SizedBox(height: 40),
+            // settings tiles
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  SettingsTile(
+                  const SettingsTile(
                       isAtExtremeEnd: true,
                       topOrBottom: "top",
                       title: "Account",
@@ -37,7 +39,7 @@ class ProfilePage extends StatelessWidget {
                   const SizedBox(
                     height: 1,
                   ),
-                  SettingsTile(
+                  const SettingsTile(
                       isAtExtremeEnd: false,
                       title: "Settings",
                       onTap: null,
@@ -45,7 +47,7 @@ class ProfilePage extends StatelessWidget {
                   const SizedBox(
                     height: 1,
                   ),
-                  SettingsTile(
+                  const SettingsTile(
                       isAtExtremeEnd: false,
                       title: "Export Data",
                       onTap: null,
@@ -68,6 +70,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
+  // top navbar
   Widget _topNavBar(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
       Image.asset(
@@ -88,7 +91,7 @@ class ProfilePage extends StatelessWidget {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final usersList = snapshot.data!;
-                  print("Snapshot: $usersList");
+                  print(authService.currentUser!.email);
                   if (usersList.isNotEmpty) {
                     for (var user in usersList) {
                       if (user['email'] == authService.currentUser!.email) {
