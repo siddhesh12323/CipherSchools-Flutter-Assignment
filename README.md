@@ -4,6 +4,9 @@
 Email:- testuser1@gmail.com
 password:- 12345678
 
+# apk file
+https://drive.google.com/file/d/1ehh0BXMoARfD8Wt3sNWK_3b8fIyr66nS/view?usp=drivesdk
+
 # Screenshots
 
 1. Log In Screen
